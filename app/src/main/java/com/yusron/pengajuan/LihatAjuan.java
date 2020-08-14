@@ -1,6 +1,7 @@
 package com.yusron.pengajuan;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -21,6 +22,8 @@ import java.util.HashMap;
 
 public class LihatAjuan extends AppCompatActivity implements ListView.OnItemClickListener{
 
+    private Toolbar ToolBarAtas;
+
     private ListView listView;
 
     private String JSON_STRING;
@@ -29,8 +32,17 @@ public class LihatAjuan extends AppCompatActivity implements ListView.OnItemClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lihat_ajuan);
+
+        ToolBarAtas = (Toolbar) findViewById(R.id.toolbar_satu);
+
         listView = (ListView) findViewById(R.id.listView);
         listView.setOnItemClickListener(this);
+
+        setSupportActionBar(ToolBarAtas);
+        ToolBarAtas.setLogoDescription(getResources().getString(R.string.app_name));
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         getJSON();
     }
 

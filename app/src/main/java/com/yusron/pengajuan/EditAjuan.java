@@ -1,6 +1,7 @@
 package com.yusron.pengajuan;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -26,17 +28,21 @@ public class EditAjuan extends AppCompatActivity implements View.OnClickListener
     private EditText editnik;
     private EditText editnama;
     private EditText editalamat;
-    private EditText editpengajuan;
+    private Spinner spnpengajuan;
 
     private Button buttonUpdate;
     private Button buttonDelete;
 
     private String id;
 
+    private Toolbar ToolBarAtas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_ajuan);
+
+        ToolBarAtas = (Toolbar) findViewById(R.id.toolbar_satu);
 
         Intent intent = getIntent();
 
@@ -47,7 +53,7 @@ public class EditAjuan extends AppCompatActivity implements View.OnClickListener
         editnik = (EditText) findViewById(R.id.editnik);
         editnama = (EditText) findViewById(R.id.editnama);
         editalamat = (EditText) findViewById(R.id.editalamat);
-        editpengajuan = (EditText) findViewById(R.id.editpengajuan);
+        spnpengajuan = (Spinner) findViewById(R.id.spinnerpengajuan);
 
         buttonUpdate = (Button) findViewById(R.id.btnUpdate);
         buttonDelete = (Button) findViewById(R.id.btnDelete);
@@ -58,6 +64,11 @@ public class EditAjuan extends AppCompatActivity implements View.OnClickListener
         editid.setText(id);
 
         getEmployee();
+
+        setSupportActionBar(ToolBarAtas);
+        ToolBarAtas.setLogoDescription(getResources().getString(R.string.app_name));
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void getEmployee(){
@@ -104,7 +115,19 @@ public class EditAjuan extends AppCompatActivity implements View.OnClickListener
             editnik.setText(nik);
             editnama.setText(nama);
             editalamat.setText(alamat);
-            editpengajuan.setText(pengajuan);
+            if (pengajuan.toString().equals("Surat Pengantar KTP")){
+                spnpengajuan.setSelection(1);
+            } else  if (pengajuan.toString().equals("Surat Pembaruan KK")){
+                spnpengajuan.setSelection(2);
+            } else  if (pengajuan.toString().equals("Surat Keterangan Usaha")){
+                spnpengajuan.setSelection(3);
+            } else  if (pengajuan.toString().equals("Surat Keterangan Kematian")){
+                spnpengajuan.setSelection(4);
+            } else  if (pengajuan.toString().equals("Surat Pengantar SKCK")){
+                spnpengajuan.setSelection(5);
+            } else  if (pengajuan.toString().equals("Surat Keterangan Tidak Mampu")){
+                spnpengajuan.setSelection(6);
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -118,7 +141,7 @@ public class EditAjuan extends AppCompatActivity implements View.OnClickListener
         final String nik = editnik.getText().toString().trim();
         final String nama = editnama.getText().toString().trim();
         final String alamat = editalamat.getText().toString().trim();
-        final String pengajuan = editpengajuan.getText().toString().trim();
+        final String pengajuan = spnpengajuan.getSelectedItem().toString();
 
         class UpdateEmployee extends AsyncTask<Void,Void,String>{
             ProgressDialog loading;
@@ -200,12 +223,13 @@ public class EditAjuan extends AppCompatActivity implements View.OnClickListener
                 });
 
         alertDialogBuilder.setNegativeButton("Tidak",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
 
-                    }
-                });
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            startActivity(new Intent(EditAjuan.this,LihatAjuan.class));
+                        }
+                    });
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
@@ -215,7 +239,7 @@ public class EditAjuan extends AppCompatActivity implements View.OnClickListener
     public void onClick(View v) {
         if(v == buttonUpdate){
             updateEmployee();
-            startActivity(new Intent(this,MainActivity.class));
+            startActivity(new Intent(this,LihatAjuan.class));
         }
 
         if(v == buttonDelete){

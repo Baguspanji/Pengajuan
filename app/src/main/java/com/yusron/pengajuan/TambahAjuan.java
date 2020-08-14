@@ -1,24 +1,29 @@
 package com.yusron.pengajuan;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.HashMap;
 
 public class TambahAjuan extends AppCompatActivity implements View.OnClickListener{
 
+    private Toolbar ToolBarAtas;
+
     private EditText editnokk;
     private EditText editnik;
     private EditText editnama;
     private EditText editalamat;
-    private EditText editpengajuan;
+    private Spinner sppengajuan;
 
     private Button btntambah;
 
@@ -27,16 +32,23 @@ public class TambahAjuan extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tambah_ajuan);
 
+        ToolBarAtas = (Toolbar) findViewById(R.id.toolbar_satu);
+
         editnokk = (EditText) findViewById(R.id.editnomorkk);
         editnik = (EditText) findViewById(R.id.editnik);
         editnama = (EditText) findViewById(R.id.editnama);
         editalamat = (EditText) findViewById(R.id.editalamat);
-        editpengajuan = (EditText) findViewById(R.id.editpengajuan);
+        sppengajuan = (Spinner) findViewById(R.id.spinnerpengajuan);
 
         btntambah = (Button) findViewById(R.id.btnTambah);
 
         //Setting listeners to button
         btntambah.setOnClickListener(this);
+
+        setSupportActionBar(ToolBarAtas);
+        ToolBarAtas.setLogoDescription(getResources().getString(R.string.app_name));
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     //Dibawah ini merupakan perintah untuk Menambahkan Pegawai (CREATE)
@@ -46,7 +58,7 @@ public class TambahAjuan extends AppCompatActivity implements View.OnClickListen
         final String nik = editnik.getText().toString().trim();
         final String nama = editnama.getText().toString().trim();
         final String alamat = editalamat.getText().toString().trim();
-        final String pengajuan = editpengajuan.getText().toString().trim();
+        final String pengajuan = sppengajuan.getSelectedItem().toString();
 
         class AddEmployee extends AsyncTask<Void,Void,String> {
 
@@ -78,6 +90,7 @@ public class TambahAjuan extends AppCompatActivity implements View.OnClickListen
                 String res = rh.sendPostRequest(koneksi.URL_ADD, params);
                 return res;
             }
+
         }
 
         AddEmployee ae = new AddEmployee();
@@ -88,6 +101,7 @@ public class TambahAjuan extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         if(v == btntambah){
             addEmployee();
+            startActivity(new Intent(this,LihatAjuan.class));
         }
     }
 }

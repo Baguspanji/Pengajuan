@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">Pengajuan</string>
+    <string name="app_name">Aplikasi Pengajuan Sukorejo</string>
+
+    <string-array name="surat_keterangan">
+        <item>--Pilih Pengajuan--</item>
+        <item>Surat Pengantar KTP</item>
+        <item>Surat Pembaruan KK</item>
+        <item>Surat Keterangan Usaha</item>
+        <item>Surat Keterangan Kematian</item>
+        <item>Surat Pengantar SKCK</item>
+        <item>Surat Keterangan Tidak Mampu</item>
+    </string-array>
 </resources>
