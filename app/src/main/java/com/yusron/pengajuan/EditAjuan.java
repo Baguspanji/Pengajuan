@@ -61,6 +61,9 @@ public class EditAjuan extends AppCompatActivity implements View.OnClickListener
         buttonUpdate.setOnClickListener(this);
         buttonDelete.setOnClickListener(this);
 
+//        buttonUpdate.setEnabled(false);
+        buttonDelete.setEnabled(false);
+
         editid.setText(id);
 
         getEmployee();
